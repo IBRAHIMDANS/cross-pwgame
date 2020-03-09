@@ -16,6 +16,7 @@ const app: Express.Express = Express();
 export let server = createServer(app);
 const io = socketIo(server);
 export const port = process.env.PORT || 8082;
+
 app.use(bodyParser.json());
 app.use(helmet());
 app.use(cors());
@@ -24,9 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', route);
 app.use(['/api'], route);
-io.on('connection', () => {
-
-
+io.on('connection', (socket) => {
+    console.log(socket);
 })
 server.listen(port, () => {
     console.log(

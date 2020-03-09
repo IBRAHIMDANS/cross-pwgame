@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "socket api",
   "author": "Ibrahima DANSOKO <ibrahima.dansoko@outlook.com>",
-  "contributors": [
-    "Benjamin Benoit",
-    "Yassine fatihi"
-  ],
   "license": "MIT",
   "private": true,
   "main": "src/main.js",
