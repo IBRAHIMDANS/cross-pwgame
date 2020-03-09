@@ -26,8 +26,8 @@
   "exclude": [
     ".eslintrc.js",
     ".jestrc.js",
-    "babel.config.js",
-    "prettier.config.js",
+    "babel.config",
+    "prettier.config",
     "ormconfig"
   ]
 }
