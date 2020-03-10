@@ -2,9 +2,27 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-    entry: {
-        main: './src/index.tsx',
+    entry: './src/index.tsx',
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+        ],
     },
+    resolve: {
+        extensions: [ '.tsx', '.ts' ],
+    },
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
+};
+
+/*module.exports = {
+    entry: './src/index.tsx',
     output: {
         filename: 'bundle.js',
         path: __dirname + '/dist',
@@ -19,7 +37,7 @@ module.exports = {
                     loader: 'babel-loader',
                 },
                 resolve: {
-                    extensions: ['.js','.ts','.tsx'],
+                    extensions: ['.js','.jsx'],
                 },
             },
             {
@@ -29,8 +47,7 @@ module.exports = {
                 },
             },
             {
-                test: /\.ts(x?)$/,
-                exclude: /node_modules/,
+                test: /\.tsx?$/,
                 use: [
                     {
                         loader: 'ts-loader'
@@ -60,8 +77,8 @@ module.exports = {
     },
     plugins: [
         new HTMLWebpackPlugin({
-            template: './public/index.html',
-            filename: './index.html',
+            template: 'public/index.html',
+            filename: 'index.html',
         }),
     ],
-};
+};*/
