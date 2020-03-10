@@ -74,9 +74,6 @@ io.on('connection', (socket) => {
                     }
                 });
                 console.log(players);
-                // players.filter( (player.id === socket.id ) => {
-                //         player.score= player.score+1
-                // })
                 break;
             default:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'ohohoh failed' });
