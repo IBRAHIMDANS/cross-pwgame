@@ -18,8 +18,7 @@ export const port = process.env.PORT || 8082;
 const min = 0;
 const max = 1337;
 const magicNumber: number = min + Math.round(Math.random() * (max - min));
-console.log(magicNumber);
-let players = [];
+let players: Player[] = [];
 
 app.use(bodyParser.json());
 app.use(helmet());
@@ -35,18 +34,18 @@ io.on('connection', (socket) => {
     socket.emit('event::hello');
 
     socket.on('event::initialize', payload => {
-        if (players.length >= 2) {
-            socket.emit('event::gameFull');
-            return;
-        }
-
         players.push({
             id: socket.id,
-            nickname: payload.nickname,
-            score: 0
+            name: payload.name,
+            points: 0
         });
-        console.log('new player 🔥 name : ', payload.nickname);
+        console.log('new player 🔥 ', payload.name);
+        socket.name = payload.name;
 
+        if (players.length == 1) {
+            io.emit('event::waitingPlayer');
+            return;
+        }
         if (players.length === 2) {
             io.emit('event::gameStart');
         }
@@ -59,7 +58,6 @@ io.on('connection', (socket) => {
 
         const number: number = payload.number as number;
         console.log(number);
-        players.push(payload);
         switch (true) {
             case (magicNumber > number) :
                 io.to(socket.id).emit('event::sendResponse', { status: false, response: 'Trop Petit' });
@@ -69,19 +67,34 @@ io.on('connection', (socket) => {
                 break;
             case magicNumber == number:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'Félicitations tu as gagné' });
-                io.on('close' , () =>{}).emit('fin du  jeu ');
+                console.log(socket);
+                players.map(player => {
+                    if (player.name == socket.name) {
+                        player.points = player.points + 1;
+                    }
+                });
+                console.log(players);
+                // players.filter( (player.id === socket.id ) => {
+                //         player.score= player.score+1
+                // })
                 break;
             default:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'ohohoh failed' });
                 break;
         }
     });
+    socket.on('disconnect', () => {
+        console.log('user disconnected ');
+        socket.broadcast.emit('event::disconnect', 'user disconnected');
+    });
 
 });
+
 server.listen(port, () => {
     console.log(
         `server started at  ${process.env.HOST + ':' + port ||
         `http://localhost:${port}`}/api`,
     );
+    console.log('magic Number', magicNumber);
 });
 export default app;

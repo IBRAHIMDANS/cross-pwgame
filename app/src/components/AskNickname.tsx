@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { AppBar, Button, TextField, Toolbar, Typography } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 
 const AskNickname = ({ io }) => {
-    const [nickname, setNickname] = useState('');
+    const [name, setName] = useState('');
 
-    const handleNickname = event => {
-        setNickname(event.target.value);
+    const handleName = event => {
+        setName(event.target.value);
     };
 
-    const sendNickname = () => {
-        io.emit('event::initialize', { nickname });
+    const sendName = () => {
+        io.emit('event::initialize', { name });
     };
 
     return (
@@ -19,10 +19,10 @@ const AskNickname = ({ io }) => {
                 id="filled-required"
                 label="username"
                 variant="filled"
-                onChange={handleNickname} value={nickname}
+                onChange={handleName} value={name}
             />
             <div className="app-btn">
-                <Button variant="contained" color="primary" onClick={sendNickname} disabled={nickname === ''}>
+                <Button variant="contained" color="primary" onClick={sendName} disabled={name === ''}>
                     Login 😀
                 </Button>
             </div>
