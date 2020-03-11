@@ -8,6 +8,8 @@ import cacheControl from 'express-cache-controller';
 import { createServer, Server } from 'http';
 import helmet from 'helmet';
 import socketIO from 'socket.io';
+import getNumber from './games/magicNumber';
+import { addPlayer, addPoint, players } from './player';
 
 config(); // init dotEnv
 
@@ -15,10 +17,8 @@ const app: Express.Express = Express();
 export let server: Server = createServer(app);
 const io = socketIO(server);
 export const port = process.env.PORT || 8082;
-const min = 0;
-const max = 1337;
-const magicNumber: number = min + Math.round(Math.random() * (max - min));
-let players: Player[] = [];
+const magicNumber: number = getNumber();
+
 
 app.use(bodyParser.json());
 app.use(helmet());
@@ -31,23 +31,15 @@ app.use(['/api'], route);
 
 io.on('connection', (socket) => {
     console.log('new connection');
-    socket.emit('event::hello');
-
     socket.on('event::initialize', payload => {
-        players.push({
-            id: socket.id,
-            name: payload.name,
-            points: 0
-        });
-        console.log('new player 🔥 ', payload.name);
-        socket.name = payload.name;
-
+        socket.nameUser = payload.name;
+        addPlayer(socket.id, socket.nameUser, 0);
         if (players.length == 1) {
             io.emit('event::waitingPlayer');
             return;
         }
         if (players.length === 2) {
-            io.emit('event::gameStart');
+            io.emit('event::gameStart', { start: true, wait: false, full: false });
         }
         if (players.length >= 2) {
             io.emit('event::fullPlayer');
@@ -55,9 +47,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('event::checkNumber', payload => {
-
         const number: number = payload.number as number;
-        console.log(number);
+        console.log('joueur', socket.nameUser, number);
         switch (true) {
             case (magicNumber > number) :
                 io.to(socket.id).emit('event::sendResponse', { status: false, response: 'Trop Petit' });
@@ -67,13 +58,7 @@ io.on('connection', (socket) => {
                 break;
             case magicNumber == number:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'Félicitations tu as gagné' });
-                console.log(socket);
-                players.map(player => {
-                    if (player.name == socket.name) {
-                        player.points = player.points + 1;
-                    }
-                });
-                console.log(players);
+                addPoint((socket.nameUser as string));
                 break;
             default:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'ohohoh failed' });

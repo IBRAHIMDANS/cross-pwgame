@@ -1,9 +1,5 @@
-
-
-declare global {
-    namespace SocketIO {
-        export interface Socket {
-            name?: String
-        }
+declare namespace SocketIO {
+    export interface Socket {
+        nameUser: string
     }
 }
