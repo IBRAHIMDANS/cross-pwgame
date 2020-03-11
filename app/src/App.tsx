@@ -5,11 +5,12 @@ import './App.css';
 import { Box } from '@material-ui/core';
 import ToolBar from './components/Toolbar';
 import GameStatus from './model/GameStatus';
+import MagicNumber from './components/MagicNumber';
 
 const io = socketIO('http://localhost:8080');
 
 function App() {
-    const [isGameStatus, setGameStatus] = useState<GameStatus>({ start: false, waiting: false , full: false});
+    const [isGameStatus, setGameStatus] = useState<GameStatus>({ start: false, waiting: false, full: false });
 
     useEffect(() => {
         io.on('event::gameStart', (data: GameStatus) => {
@@ -21,17 +22,17 @@ function App() {
 
 
     const switchComponent = () => {
-        if (!isGameStatus.start && !isGameStatus.waiting && !isGameStatus.full ) {
+        if (!isGameStatus.start && !isGameStatus.waiting && !isGameStatus.full) {
             return <AskNickname io={io}/>;
         }
-        if (!isGameStatus.start && isGameStatus.waiting&& !isGameStatus.full ) {
+        if (!isGameStatus.start && isGameStatus.waiting && !isGameStatus.full) {
             return <span> wait </span>;
         }
-        if (!isGameStatus.start && !isGameStatus.waiting&& isGameStatus.full ) {
-            return <span> wait </span>;
+        if (!isGameStatus.start && !isGameStatus.waiting && isGameStatus.full) {
+            return <span> full </span>;
         }
         if (isGameStatus.start && !isGameStatus.waiting && !isGameStatus.full) {
-            return <AskNickname io={io}/>;
+            return <MagicNumber io={io}/>;
         }
     };
     return (<>
