@@ -35,14 +35,14 @@ io.on('connection', (socket) => {
         socket.nameUser = payload.name;
         addPlayer(socket.id, socket.nameUser, 0);
         if (players.length == 1) {
-            io.emit('event::waitingPlayer');
+            io.emit('event::gameStart',{ start: false, waiting: true, full: false });
             return;
         }
         if (players.length === 2) {
-            io.emit('event::gameStart', { start: true, wait: false, full: false });
+            io.emit('event::gameStart', { start: true, waiting: false, full: false });
         }
-        if (players.length >= 2) {
-            io.emit('event::fullPlayer');
+        if (players.length > 2) {
+            io.emit('event::gameStart',{ start: false, waiting: false, full: true });
         }
     });
 
