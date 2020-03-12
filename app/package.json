@@ -31,9 +31,12 @@
     "html-webpack-plugin": "^3.2.0",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.1",
+    "gh-pages": "^2.2.0",
     "webpack-cli": "^3.3.11"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "dev": "webpack-dev-server --open --mode development",
     "build": "react-scripts build",
@@ -42,6 +45,7 @@
     "eject": "react-scripts eject",
     "start-sw": "http-server ./build"
   },
+  "homepage": "http://ibrahimdans.github.io/cross-pwgame",
   "eslintConfig": {
     "extends": "react-app"
   },

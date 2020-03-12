@@ -6,6 +6,7 @@ import { Box } from '@material-ui/core';
 import ToolBar from './components/Toolbar';
 import GameStatus from './model/GameStatus';
 import MagicNumber from './components/MagicNumber';
+import SocketContext from './context/SocketContext';
 
 const io = socketIO('http://localhost:8080');
 
@@ -35,11 +36,18 @@ function App() {
             return <MagicNumber io={io}/>;
         }
     };
-    return (<>
+    const socketContextValue = {
+        io,
+        player: undefined
+    };
+    return (
+        <>
             <ToolBar/>
-            <Box color="text.primary" className="app-container">
-                {switchComponent()}
-            </Box>
+            <SocketContext.Provider value={socketContextValue}>
+                <Box color="text.primary" className="app-container">
+                    {switchComponent()}
+                </Box>
+            </SocketContext.Provider>
         </>
     );
 }
