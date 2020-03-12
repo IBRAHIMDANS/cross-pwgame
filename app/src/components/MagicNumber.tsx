@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Chip, TextField } from '@material-ui/core';
+import ToolBar from './Toolbar';
+import { SocketContext } from '../context/SocketContext';
 
-const MagicNumber = ({ io }) => {
+const MagicNumber = () => {
+    const io = useContext(SocketContext);
+
     const [number, setNumber] = useState('');
     const [response, setResponse] = useState();
     const handleNumber = event => {
@@ -20,6 +24,7 @@ const MagicNumber = ({ io }) => {
     };
     return (
         <>
+            <ToolBar/>
             <TextField
                 required
                 id="filled-required"
