@@ -53,6 +53,7 @@
     "express-validator": "^6.2.0",
     "helmet": "^3.21.2",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^2.3.0",
     "ts-node": "3.3.0",

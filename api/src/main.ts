@@ -10,6 +10,10 @@ import helmet from 'helmet';
 import socketIO from 'socket.io';
 import getNumber from './games/magicNumber';
 import { addPlayer, addPoint, getPlayer, setPlayers } from './player';
+// @ts-ignore
+import * as gamesJson from "../games";
+import moment from 'moment';
+import * as fs from 'fs';
 
 config(); // init dotEnv
 
@@ -18,6 +22,7 @@ export let server: Server = createServer(app);
 const io = socketIO(server);
 export const port = process.env.PORT || 8082;
 let magicNumber: number = getNumber();
+let beg: string;
 
 
 app.use(bodyParser.json());
@@ -28,7 +33,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', route);
 app.use(['/api'], route);
-
 io.on('connection', (socket) => {
     console.log('new connection');
     socket.on('event::initialize', payload => {
@@ -40,6 +44,7 @@ io.on('connection', (socket) => {
         }
         if (getPlayer().length === 2) {
             io.emit('event::gameStart', { start: true, waiting: false, full: false });
+            beg = moment().format()
         }
         if (getPlayer().length > 2) {
             io.to(socket.id).emit('event::gameStart', { start: false, waiting: false, full: true });
@@ -59,9 +64,24 @@ io.on('connection', (socket) => {
             case magicNumber == number:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'Félicitations tu as gagné' });
                 addPoint((socket.nameUser as string));
-                socket.broadcast.emit('event::resetGame', { status: true, response: 'Votre adversaire a gagné' });
+                socket.broadcast.emit('event::resetGame', { status: true });
                 magicNumber = getNumber();
                 console.log(magicNumber);
+                getPlayer().map(player => {
+                    if (player.points === 3) {
+                        socket.broadcast.emit('event::endGame', {
+                            status: true,
+                            response: `${player.name}  a gagné le jeu`
+                        });
+                        gamesJson.magicNumber.push({
+                            "beg": beg,
+                            "end" : moment().format(),
+                            "players" :  [getPlayer()]
+                        })
+                        console.log(gamesJson);
+                        fs.writeFileSync("../games",gamesJson)
+                    }
+                });
                 break;
             default:
                 io.to(socket.id).emit('event::sendResponse', { status: false, response: 'ohohoh failed' });
