@@ -43,6 +43,13 @@
     justify-content: center;
     margin: 19em 2em 1em;
 }
+.app-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 19em 2em 1em;
+}
 
 .app-btn {
     display: flex;
@@ -53,4 +60,12 @@
     display: flex;
     justify-content: center;
     margin-top: .5em;
+}
+.app-text {
+    margin: 1.5em 0
+  }
+.app-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

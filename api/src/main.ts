@@ -9,7 +9,7 @@ import { createServer, Server } from 'http';
 import helmet from 'helmet';
 import socketIO from 'socket.io';
 import getNumber from './games/magicNumber';
-import { addPlayer, addPoint, players } from './player';
+import { addPlayer, addPoint, getPlayer, setPlayers } from './player';
 
 config(); // init dotEnv
 
@@ -34,14 +34,14 @@ io.on('connection', (socket) => {
     socket.on('event::initialize', payload => {
         socket.nameUser = payload.name;
         addPlayer(socket.id, socket.nameUser, 0);
-        if (players.length == 1) {
+        if (getPlayer().length == 1) {
             io.to(socket.id).emit('event::gameStart', { start: false, waiting: true, full: false });
             return;
         }
-        if (players.length === 2) {
+        if (getPlayer().length === 2) {
             io.emit('event::gameStart', { start: true, waiting: false, full: false });
         }
-        if (players.length > 2) {
+        if (getPlayer().length > 2) {
             io.to(socket.id).emit('event::gameStart', { start: false, waiting: false, full: true });
         }
     });
@@ -67,9 +67,8 @@ io.on('connection', (socket) => {
     });
     socket.on('disconnect', () => {
         console.log('user disconnected ');
-        let filteredPlayer = players.filter(item => item.name != socket.nameUser);
-        players = filteredPlayer;
-        console.log(filteredPlayer);
+        let filteredPlayer = getPlayer().filter(item => item.name != socket.nameUser);
+        setPlayers(filteredPlayer);
         socket.broadcast.emit('event::disconnect', 'user disconnected');
     });
 

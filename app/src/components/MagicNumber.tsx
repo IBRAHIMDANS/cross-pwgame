@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Chip, TextField } from '@material-ui/core';
+import { Box, Button, Chip, TextField } from '@material-ui/core';
 import ToolBar from './Toolbar';
 import { SocketContext } from '../context/SocketContext';
 
@@ -25,34 +25,34 @@ const MagicNumber = () => {
     return (
         <>
             <ToolBar/>
-            <TextField
-                required
-                id="filled-required"
-                label="please enter your number"
-                type="number"
-                variant="filled"
-                onChange={handleNumber} value={number}
-            />
-            {response ? <div className="app-chip">
-                    <Chip
-                        variant="outlined"
-                        size="small"
-                        label={response.response}
-                        color={response.status === true ? 'primary' : 'secondary'}
-                    /></div>
-                : <span></span>
-            }
-            <div className="app-btn">
+            <Box color="text.primary" className="app-container">
+                <TextField
+                    required
+                    id="filled-required"
+                    label="please enter your number"
+                    type="number"
+                    variant="filled"
+                    onChange={handleNumber} value={number}
+                />
+                {response ? <div className="app-chip">
+                        <Chip
+                            variant="outlined"
+                            size="small"
+                            label={response.response}
+                            color={response.status === true ? 'primary' : 'secondary'}
+                        /></div>
+                    : <span />
+                }
+                <div className="app-btn">
 
-                        <Button variant="contained" color="primary" onClick={sendNumber} disabled={number === ''}>
-                            check
-                        </Button>
-                        {/*<Button variant="contained" color="primary" onClick={resetGame} disabled={number === ''}>*/}
-                        {/*    Rejouer*/}
-                        {/*</Button>*/}
-
-
-            </div>
+                    <Button variant="contained" color="primary" onClick={sendNumber} disabled={number === ''}>
+                        check
+                    </Button>
+                    {/*<Button variant="contained" color="primary" onClick={resetGame} disabled={number === ''}>*/}
+                    {/*    Rejouer*/}
+                    {/*</Button>*/}
+                </div>
+            </Box>
         </>
     );
 };

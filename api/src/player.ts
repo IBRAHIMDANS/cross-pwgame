@@ -1,6 +1,10 @@
 import Player from './routes/dto/player';
 
-export let players: Player [] = [];
+let players: Player [] = [];
+
+export function setPlayers(player: Array<Player>) {
+    return players = player;
+}
 
 export function addPlayer(id: string, name: string, points: number = 0): any {
     console.log('new player 🔥 ', name);
@@ -12,7 +16,6 @@ export function addPlayer(id: string, name: string, points: number = 0): any {
 }
 
 export function getPlayer() {
-    console.log(players);
     return players;
 }
 
