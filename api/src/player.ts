@@ -1,4 +1,6 @@
-export const players: Player [] = [];
+import Player from './routes/dto/player';
+
+export let players: Player [] = [];
 
 export function addPlayer(id: string, name: string, points: number = 0): any {
     console.log('new player 🔥 ', name);
