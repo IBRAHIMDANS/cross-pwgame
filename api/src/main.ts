@@ -17,7 +17,7 @@ const app: Express.Express = Express();
 export let server: Server = createServer(app);
 const io = socketIO(server);
 export const port = process.env.PORT || 8082;
-const magicNumber: number = getNumber();
+let magicNumber: number = getNumber();
 
 
 app.use(bodyParser.json());
@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('event::checkNumber', payload => {
-        const number: number = payload.number as number;
+        let number: number = payload.number as number;
         console.log('joueur', socket.nameUser, number);
         switch (true) {
             case (magicNumber > number) :
@@ -59,9 +59,12 @@ io.on('connection', (socket) => {
             case magicNumber == number:
                 io.to(socket.id).emit('event::sendResponse', { status: true, response: 'Félicitations tu as gagné' });
                 addPoint((socket.nameUser as string));
+                socket.broadcast.emit('event::resetGame', { status: true, response: 'Votre adversaire a gagné' });
+                magicNumber = getNumber();
+                console.log(magicNumber);
                 break;
             default:
-                io.to(socket.id).emit('event::sendResponse', { status: true, response: 'ohohoh failed' });
+                io.to(socket.id).emit('event::sendResponse', { status: false, response: 'ohohoh failed' });
                 break;
         }
     });

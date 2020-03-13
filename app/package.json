@@ -53,7 +53,7 @@
     "eject": "react-scripts eject",
     "start-sw": "http-server ./build"
   },
-  "homepage": "http://ibrahimdans.github.io/cross-pwgame",
+  "homepage": "http://ibrahimdans.github.io/",
   "eslintConfig": {
     "extends": "react-app"
   },

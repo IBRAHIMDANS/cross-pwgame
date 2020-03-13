@@ -15,12 +15,20 @@ const MagicNumber = () => {
         io.on('event::sendResponse', (data) => {
             setResponse(data);
         });
-    }, []);
+    }, [io]);
+    useEffect(() => {
+        io.on('event::resetGame', (on) => {
+            setNumber('');
+            setResponse('');
+        });
+    }, [io]);
     const sendNumber = () => {
         io.emit('event::checkNumber', { number });
     };
     const resetGame = () => {
         io.emit('event::resetGame', {});
+        setNumber('');
+        setResponse(undefined)
     };
     return (
         <>
@@ -41,16 +49,18 @@ const MagicNumber = () => {
                             label={response.response}
                             color={response.status === true ? 'primary' : 'secondary'}
                         /></div>
-                    : <span />
+                    : <span/>
                 }
                 <div className="app-btn">
-
-                    <Button variant="contained" color="primary" onClick={sendNumber} disabled={number === ''}>
-                        check
-                    </Button>
-                    {/*<Button variant="contained" color="primary" onClick={resetGame} disabled={number === ''}>*/}
-                    {/*    Rejouer*/}
-                    {/*</Button>*/}
+                    {
+                        response?.status !== true ?
+                            <Button variant="contained" color="primary" onClick={sendNumber} disabled={number === ''}>
+                                check
+                            </Button> :
+                            <Button variant="contained" color="primary" onClick={resetGame} disabled={number === ''}>
+                                Rejouer
+                            </Button>
+                    }
                 </div>
             </Box>
         </>
