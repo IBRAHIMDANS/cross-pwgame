@@ -8,7 +8,7 @@ import getNumber from './games/magicNumber';
 import { addPlayer, addPoint, getPlayer, setPlayers } from './player';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import * as gamesJson from '../games';
+import * as gamesJson from '../../games.json';
 import moment from 'moment';
 import * as fs from 'fs';
 import chalk from 'chalk';
@@ -57,6 +57,7 @@ io.on('connection', (socket: any) => {
     socket.on('event::checkNumber', (payload: { number: number }) => {
         const number: number = payload.number as number;
         console.log('joueur', socket.nameUser, number);
+
         switch (true) {
             case magicNumber > number:
                 io.to(socket.id).emit('event::sendResponse', {
@@ -79,22 +80,26 @@ io.on('connection', (socket: any) => {
                 socket.broadcast.emit('event::resetGame', { status: true });
                 magicNumber = getNumber();
                 console.log(chalk.magenta('new magic Number', magicNumber));
+                const _gamesJson = gamesJson;
                 getPlayer().map(player => {
-                    if (player.points === 3) {
-                        socket.broadcast.emit('event::endGame', {
-                            status: true,
-                            response: `${player.name}  a gagné le jeu`,
-                        });
-                        const nGJSON = gamesJson.magicNumber.push({
-                            beg: beg,
-                            end: moment().format(),
-                            players: [getPlayer()],
-                        });
-                        console.log(nGJSON);
-                        fs.writeFile('../games.json', nGJSON, err => {
-                            if (err) console.log(chalk.red(err));
-                        });
+                    if (player.points !== 3) {
+                        return;
                     }
+                    socket.broadcast.emit('event::endGame', {
+                        status: true,
+                        response: `${player.name}  a gagné le jeu`,
+                    });
+                    _gamesJson.magicNumber.push({
+                        beg,
+                        end: moment().format(),
+                        players: [getPlayer()],
+                    });
+                    console.log(_gamesJson);
+                    fs.writeFileSync(
+                        '../../games.json',
+                        JSON.stringify(_gamesJson),
+                        'utf-8',
+                    );
                 });
                 break;
             default:

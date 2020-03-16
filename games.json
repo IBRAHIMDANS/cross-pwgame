@@ -1,0 +1,22 @@
+{
+  "magicNumber": [
+    {
+      "beg": "2020-03-16T22:05:34+01:00",
+      "end": "2020-03-16T22:06:11+01:00",
+      "players": [
+        [
+          {
+            "id": "7xqfoi-JeRl2_TGUAAAC",
+            "name": "ibrahima",
+            "points": 3
+          },
+          {
+            "id": "OEenURLtDECXqluLAAAD",
+            "name": "dansoko",
+            "points": 2
+          }
+        ]
+      ]
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import chalk from 'chalk';
 
 let players: Player[] = [];
 
-export function setPlayers(player: Array<Player>): player[] {
+export function setPlayers(player: Array<Player>) {
     return (players = player);
 }
 
@@ -17,17 +17,16 @@ export function addPlayer(id: string, name: string, points: number = 0): any {
     });
 }
 
-export function getPlayer(): Player[] {
+export function getPlayer() {
     return players;
 }
 
-export function addPoint(name: string): player[] {
+export function addPoint(name: string) {
     console.log(name);
     players.map(player => {
         if (player.name == name) {
             player.points += 1;
         }
     });
-    console.log(players);
     return players;
 }
