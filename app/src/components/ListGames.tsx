@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 const ListGames = () => {
     const [games, setGames] = React.useState('');
-    const handleChange = event => {
+    const handleChange = (event: any) => {
         setGames(event.target.value);
     };
     const history = useHistory();

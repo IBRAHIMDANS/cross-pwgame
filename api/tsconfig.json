@@ -20,9 +20,11 @@
     "sourceMap": true,
     "outDir": "dist"
   },
-  "include": [
-    "src",
+  "files": [
     "types.d.ts"
+  ],
+  "include": [
+    "src"
   ],
   "exclude": [
     ".eslintrc.js",
