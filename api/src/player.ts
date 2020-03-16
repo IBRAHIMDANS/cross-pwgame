@@ -1,29 +1,30 @@
 import Player from './routes/dto/player';
+import player from './routes/dto/player';
+import chalk from 'chalk';
 
-let players: Player [] = [];
+let players: Player[] = [];
 
-export function setPlayers(player: Array<Player>) {
-    return players = player;
+export function setPlayers(player: Array<Player>): player[] {
+    return (players = player);
 }
 
 export function addPlayer(id: string, name: string, points: number = 0): any {
-    console.log('new player 🔥 ', name);
+    console.log(chalk.red('new player 🔥 ', name));
     return players.push({
         id,
         name,
-        points
+        points,
     });
 }
 
-export function getPlayer() {
+export function getPlayer(): Player[] {
     return players;
 }
 
-export function addPoint(name: string) {
+export function addPoint(name: string): player[] {
     console.log(name);
     players.map(player => {
         if (player.name == name) {
-            console.log('ok');
             player.points += 1;
         }
     });

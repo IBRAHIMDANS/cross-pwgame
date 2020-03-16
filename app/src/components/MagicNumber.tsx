@@ -17,7 +17,7 @@ const MagicNumber = () => {
         });
     }, [io]);
     useEffect(() => {
-        io.on('event::resetGame', (on) => {
+        io.on('event::resetGame', () => {
             setNumber('');
             setResponse('');
         });

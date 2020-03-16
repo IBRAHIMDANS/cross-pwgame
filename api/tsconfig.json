@@ -24,7 +24,8 @@
     "types.d.ts"
   ],
   "include": [
-    "src"
+    "src",
+    "types.d.ts"
   ],
   "exclude": [
     ".eslintrc.js",

@@ -19,7 +19,7 @@ module.exports = {
     ],
     plugins: ['jest', 'prettier'],
     rules: {
-        'prettier/prettier': ['error', require('./prettier.config.js')],
+        'prettier/prettier': ['error', require('./prettier.config.ts')],
 
         // Typescript stuff
         '@typescript-eslint/no-inferrable-types': 'off',

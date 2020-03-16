@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Box, Button, TextField } from '@material-ui/core';
 import { SocketContext } from '../context/SocketContext';
-import reload from '../utils/Reload';
+import useReload from '../hooks/useReload';
 
 const AskNickname = () => {
     const [name, setName] = useState('');
@@ -13,21 +13,7 @@ const AskNickname = () => {
     const sendName = () => {
         io.emit('event::initialize', { name });
     };
-    reload(io);
-    // const switchComponent = () => {
-    //     if (!isGameStatus.start && !isGameStatus.waiting && !isGameStatus.full) {
-    //         return <AskNickname io={io}/>;
-    //     }
-    //     if (!isGameStatus.start && isGameStatus.waiting && !isGameStatus.full) {
-    //         return <span> wait </span>;
-    //     }
-    //     if (!isGameStatus.start && !isGameStatus.waiting && isGameStatus.full) {
-    //         return <span> full </span>;
-    //     }
-    //     if (isGameStatus.start && !isGameStatus.waiting && !isGameStatus.full) {
-    //         return <MagicNumber io={io}/>;
-    //     }
-    // };
+    useReload(io);
     return (
         <>
             <Box color="text.primary" className="app-container">
