@@ -17,7 +17,7 @@ export function addPlayer(id: string, name: string, points: number = 0): any {
     });
 }
 
-export function getPlayer() {
+export function getPlayer(): Player[] {
     return players;
 }
 

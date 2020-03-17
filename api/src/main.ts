@@ -36,6 +36,7 @@ io.on('connection', (socket: any) => {
             return;
         }
         if (getPlayer().length === 2) {
+            io.emit('event::Score', getPlayer());
             io.emit('event::gameStart', {
                 start: true,
                 waiting: false,
@@ -55,7 +56,7 @@ io.on('connection', (socket: any) => {
     socket.on('event::checkNumber', (payload: { number: number }) => {
         const number: number = payload.number as number;
         console.log('joueur', socket.nameUser, number);
-
+        io.emit('event::Score', getPlayer());
         switch (true) {
             case magicNumber > number:
                 io.to(socket.id).emit('event::sendResponse', {
@@ -91,15 +92,7 @@ io.on('connection', (socket: any) => {
                     _gamesJson.magicNumber.push({
                         beg,
                         end: moment().format(),
-                        players: [
-                            getPlayer().map(item => {
-                                return {
-                                    id: item.id,
-                                    name: item.name,
-                                    points: item.points,
-                                };
-                            }),
-                        ],
+                        players: [getPlayer()],
                     });
                     console.log(_gamesJson);
                     fs.writeFileSync(

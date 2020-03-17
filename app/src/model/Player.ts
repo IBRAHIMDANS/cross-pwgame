@@ -1,5 +1,5 @@
 export  default interface Player {
     id: string;
-    nickname: string;
+    name: string;
     points: number;
 }
