@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Box, Button, Chip, TextField } from '@material-ui/core';
 import ToolBar from './Toolbar';
 import { SocketContext } from '../context/SocketContext';
+import DashBoard from './Dashboard';
 
 const MagicNumber = () => {
     const io = useContext(SocketContext);
@@ -34,6 +35,7 @@ const MagicNumber = () => {
         <>
             <ToolBar/>
             <Box color="text.primary" className="app-container">
+                <DashBoard/>
                 <TextField
                     required
                     id="filled-required"

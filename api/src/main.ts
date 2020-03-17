@@ -6,8 +6,6 @@ import { createServer, Server } from 'http';
 import socketIO from 'socket.io';
 import getNumber from './games/magicNumber';
 import { addPlayer, addPoint, getPlayer, setPlayers } from './player';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import * as gamesJson from '../../games.json';
 import moment from 'moment';
 import * as fs from 'fs';
@@ -81,6 +79,7 @@ io.on('connection', (socket: any) => {
                 magicNumber = getNumber();
                 console.log(chalk.magenta('new magic Number', magicNumber));
                 const _gamesJson = gamesJson;
+                io.emit('event::Score', getPlayer());
                 getPlayer().map(player => {
                     if (player.points !== 3) {
                         return;
@@ -92,7 +91,15 @@ io.on('connection', (socket: any) => {
                     _gamesJson.magicNumber.push({
                         beg,
                         end: moment().format(),
-                        players: [getPlayer()],
+                        players: [
+                            getPlayer().map(item => {
+                                return {
+                                    id: item.id,
+                                    name: item.name,
+                                    points: item.points,
+                                };
+                            }),
+                        ],
                     });
                     console.log(_gamesJson);
                     fs.writeFileSync(
